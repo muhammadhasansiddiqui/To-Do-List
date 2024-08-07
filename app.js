@@ -9,6 +9,13 @@ import {
   serverTimestamp ,
   query, 
   where,
+  limit,
+  orderBy,
+  startAt,
+  storage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
 } from "./firebase.js";
 
 let todo = document.getElementById("todoInput");
@@ -54,10 +61,14 @@ let crosbtn = document.getElementById("crosbtn");
 
 // clearbtn && clearbtn.addEventListener("click", clearAll);
 
+// where("id", "<=",  10) ye q ma use kiya tha 
+
 let getTodos = () => {
-let q = query(collection(db, "todos") , where("id", "<=",  10));
+let q = query(collection(db, "todos"),orderBy("todo" )  );
 
   onSnapshot (q ,(Snapshot) => {
+  console.log("🚀 ~ onSnapshot ~ Snapshot:", Snapshot);
+
     list.innerHTML = "";
     Snapshot.docChanges().forEach((changes) => {
       console.log("🚀 ~ Snapshot.docChanges ~ changes:", changes.type);
@@ -65,7 +76,7 @@ let q = query(collection(db, "todos") , where("id", "<=",  10));
 
     Snapshot.forEach((doc) => {
       let { todo } = doc.data();
-
+      
       list.innerHTML += `<li>${todo} <button id="crosbtn" onclick="delTodo('${doc.id}')">   <img id="crosimg" src="https://clipart-library.com/images/gie5B478T.png" alt="Image"> </button></li>`;
     });
   });
@@ -79,6 +90,67 @@ let delTodo = async (id) => {
 };
 
 window.delTodo = delTodo;
+
+
+
+let uploadBtn = document.getElementById("uploadBtn");
+
+let uploadFile = ()=> {
+let file = document.getElementById("file");
+
+const storageRef = ref(storage, `images/${file.files[0].name}`);
+
+const uploadTask = uploadBytesResumable(storageRef, file.files[0]);
+
+uploadTask.on('state_changed', 
+  (snapshot) => {
+    
+    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    console.log('Upload is ' + progress + '% done');
+    switch (snapshot.state) {
+      case 'paused':
+        console.log('Upload is paused');
+        break;
+      case 'running':
+        console.log('Upload is running');
+        break;
+    }
+  }, 
+  (error) => {
+  }, 
+  () => {
+
+    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      console.log('File available at', downloadURL);
+    });
+  }
+);
+
+
+
+
+}
+
+
+uploadBtn && uploadBtn.addEventListener("click",uploadFile)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // let getTodos = async () => {
 //     const ref = collection(db, "todos");

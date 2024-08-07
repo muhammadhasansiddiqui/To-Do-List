@@ -1,4 +1,6 @@
 
+
+
 // firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import {} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
@@ -6,8 +8,10 @@ import {} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // firestore
 
-import { doc, setDoc,getFirestore ,collection, addDoc,onSnapshot,deleteDoc ,serverTimestamp, query, where,   } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { doc, setDoc,getFirestore ,collection, startAt,addDoc,onSnapshot,orderBy,deleteDoc ,serverTimestamp, query, where,limit   } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
+// storage
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
 
 const firebaseConfig = {
@@ -24,6 +28,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 export {
   doc, 
@@ -36,4 +41,12 @@ export {
    serverTimestamp ,
    query,
     where,
+    limit,
+    orderBy,
+    startAt,
+    storage,
+    ref,
+    uploadBytesResumable,
+    getDownloadURL,
 };
+
