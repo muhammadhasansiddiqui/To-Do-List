@@ -6,7 +6,7 @@ background-color: rgb(54, 174, 178);
 .main {
 
     background-color: gainsboro;
-    height: 70vh;
+    height: auto;
 
     box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
     
@@ -27,7 +27,7 @@ flex-wrap: wrap;
 #crosimg{
 
     height: 20px !important;
-    background-color: #36AEB2;
+    background-color: gold;
 border-radius: 10px;
 width: 20px;
 object-fit: contain;
